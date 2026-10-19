@@ -1,0 +1,66 @@
+---
+const { variant = 'c3c4' } = Astro.props;
+type Node = { label: string; title: string; body: string; watch: string };
+const chains: Record<string, Node[]> = {
+  c3c4: [
+    {label:'丙烷 / C4',title:'从原料暴露开始',body:'C3 与 C4 是不同的原料与产品链。原料价格、采购来源和联产品结构共同影响企业的成本位置。',watch:'追踪：原料价格、采购结构、装置利用率。'},
+    {label:'PDH → 丙烯',title:'工艺把原料连接到中间体',body:'PDH 以丙烷脱氢制丙烯。判断扩产时，需要同时考虑丙烷—丙烯价差、装置负荷和下游消化能力。',watch:'追踪：加工价差、有效产量与新增产能。'},
+    {label:'PO → 聚醚',title:'同一产品，不同路线',body:'环氧丙烷（PO）的工艺路线具有不同原料、联产品和环保处理条件；PO 进一步用于聚醚多元醇等下游。',watch:'追踪：工艺成本、联产品价值、下游订单。'},
+    {label:'电子级材料',title:'另一条竞争维度：规格与认证',body:'电子级氢氟酸与湿电子化学品属于新材料研究分支。纯度、关键杂质、批次一致性和客户认证共同影响竞争位置。',watch:'追踪：产品规格、认证周期、稳定供货与应用场景。'}
+  ],
+  fuels: [
+    {label:'UCO / 油脂',title:'原料网络决定起点',body:'废弃食用油（UCO）等油脂需要回收、预处理和来源追溯。原料可得性与成本影响不同路线的经营条件。',watch:'追踪：采购成本、回收量、溯源与预处理。'},
+    {label:'FAME',title:'酯交换路线',body:'油脂通过酯交换制成脂肪酸甲酯（FAME）。分析需具体到产品标准、原料适应性与销售市场。',watch:'追踪：油脂与甲醇成本、转化效率、产品价差。'},
+    {label:'HVO',title:'加氢处理路线',body:'HVO 路线对油脂进行加氢处理，形成可再生烃类燃料。原料、氢气与装置条件共同影响成本和产品结构。',watch:'追踪：氢耗、原料成本、产品收率与认证。'},
+    {label:'SAF / HEFA',title:'航空用途有额外条件',body:'HEFA 是通向可持续航空燃料的技术路线之一，需要适当的异构化、分馏与产品认证。HVO 不能直接等同于 SAF。',watch:'追踪：合格路线、航空燃料要求、市场准入。'}
+  ],
+  methionine: [
+    {label:'养殖 / 饲料',title:'先问添加经济性',body:'蛋氨酸研究从动物营养需求、饲料配方和养殖效率出发，需求韧性与短期价格变化分别观察。',watch:'追踪：养殖量、饲料量、配方与添加成本。'},
+    {label:'有效供给',title:'名义产能需要变成实际供给',body:'工艺、资金、环保条件与生产一体化影响进入门槛；装置事件及投放节奏会改变有效供给。',watch:'追踪：负荷、检修、投放进度与贸易流。'},
+    {label:'液体 / 固体',title:'产品形态需要保留使用条件',body:'液体与固体产品的比较需要结合有效利用、客户配方和应用条件，不能只凭产品吨数比较。',watch:'追踪：规格、使用条件、客户经济性。'},
+    {label:'成本 / 利润',title:'将供需落到经营变量',body:'把产品价格与原料、能源成本结合，观察价差及一体化条件如何影响盈利。',watch:'追踪：价格、单位成本、产品结构与销量。'}
+  ],
+  polyester: [
+    {label:'原油 → PX',title:'成本链的上游',body:'原油与 PX 影响聚酯链的原料环境。传导存在时滞，产品价格仍受供需约束。',watch:'追踪：原油、PX 价格与价差。'},
+    {label:'PTA / MEG',title:'从中间原料到聚酯',body:'PTA 与 MEG 是聚酯生产的主要原料。不同环节的供给格局可能形成不同的利润变化。',watch:'追踪：原料成本、装置负荷、库存。'},
+    {label:'长丝',title:'价格变化需要结合价差',body:'原料成本上行并不直接确定长丝盈利。需要将产品售价、原料价格与库存计价条件连接。',watch:'追踪：POY / FDY / DTY 价格与加工价差。'},
+    {label:'订单 / 终端',title:'需求端检验传导',body:'纺服订单、出口与下游开工共同影响成本传导和库存去化。这里保留历史路演材料的研究时点。',watch:'追踪：终端订单、出口、下游开工及库存。'}
+  ],
+  narrative: [
+    {label:'利率环境',title:'研究假设的宏观起点',body:'利率变化可能通过风险偏好与资产配置进入叙事型资产研究，需要定义频率、时间窗口与控制变量。',watch:'待检验变量：长端利率、汇率与市场环境。'},
+    {label:'风险偏好',title:'把解释转成可观测变量',body:'风险偏好是待检验的解释环节，不能只凭资产价格同时变化认定其作用。',watch:'待检验：代理指标选择及共同冲击。'},
+    {label:'市场叙事',title:'叙事如何获得可检验定义',body:'行为金融与叙事经济学帮助组织问题，FOMO 等概念需要独立测量与证据。',watch:'待检验：事件定义、注意力与叙事强度。'},
+    {label:'资产价格',title:'相关关系与机制分开',body:'这个交互图展示团队项目的研究假设。当前网页没有原始回归表，不展示估计系数。',watch:'证据状态：履历记录与研究框架。'}
+  ],
+  business: [
+    {label:'ESG 议题',title:'明确评分依据',body:'原报告从 E/S/G 中选取九项议题，依据公司 2024 年公开披露，综合目标、披露完整性、实质措施和行业差距形成 1—5 分判断。',watch:'检查：逐项来源、评分标准与议题可比性。'},
+    {label:'供应链',title:'把可持续性落到经营系统',body:'结合原料、采购与生产组织理解持续经营能力，区分量化指标和经营解释。',watch:'检查：规模、稳定性、成本与来源。'},
+    {label:'低价能力',title:'经营优势需要连接成本',body:'从供应链规模与成本控制分析低价能力；ESG 表现作为案例分析的另一维度。',watch:'检查：单位经济性与同业可比条件。'},
+    {label:'海外扩张',title:'在市场条件中解释竞争',body:'结合出海市场与供应链条件组织案例判断，保留逐项评分依据，并分别解释机制与经营效果证据。',watch:'证据状态：原团队案例报告与履历中的获奖记录。'}
+  ]
+};
+const nodes = chains[variant] ?? chains.c3c4;
+---
+<div class="chain-interactive" data-chain-explorer>
+  <p class="small-label">点击一个环节，查看分析问题与追踪变量</p>
+  <div class="chain-buttons" role="group" aria-label="研究变量与产业链环节" style="margin-top:15px">
+    {nodes.map((node, i) => <><button type="button" data-chain-index={i} aria-pressed={i === 0 ? 'true' : 'false'}>{node.label}</button>{i < nodes.length - 1 && <span aria-hidden="true">{variant === 'c3c4' && i === 2 ? '＋' : '→'}</span>}</>)}
+  </div>
+  <div class="chain-info" aria-live="polite" aria-atomic="true"><h3 data-chain-title>{nodes[0].title}</h3><p data-chain-body>{nodes[0].body}</p><p data-chain-watch>{nodes[0].watch}</p></div>
+  <p class="source-note">依据本页材料重绘的概念示意 · 点击仅展开研究框架，不计算或预测市场结果。</p>
+  <script type="application/json" data-chain-data set:html={JSON.stringify(nodes).replace(/</g, '\\u003c')} />
+</div>
+<script>
+  document.querySelectorAll<HTMLElement>('[data-chain-explorer]').forEach(widget => {
+    const nodes = JSON.parse(widget.querySelector('[data-chain-data]')!.textContent!) as { title: string; body: string; watch: string }[];
+    widget.querySelectorAll<HTMLButtonElement>('[data-chain-index]').forEach(button => {
+      button.addEventListener('click', () => {
+        const node = nodes[Number(button.dataset.chainIndex)];
+        widget.querySelectorAll('[data-chain-index]').forEach(other => other.setAttribute('aria-pressed', String(other === button)));
+        widget.querySelector('[data-chain-title]')!.textContent = node.title;
+        widget.querySelector('[data-chain-body]')!.textContent = node.body;
+        widget.querySelector('[data-chain-watch]')!.textContent = node.watch;
+      });
+    });
+  });
+</script>

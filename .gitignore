@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.astro/
+content/
+deliverables/
+scripts/inventory.py
+docs/DIGITAL_FINANCE_SOURCE_AUDIT.md
+docs/C3C4_FIGURE_SOURCE_AUDIT.md
+qa/
+.env*
+!.env.example

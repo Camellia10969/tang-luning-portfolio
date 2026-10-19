@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="640" viewBox="0 0 1200 640" role="img" aria-labelledby="title desc">
+  <title id="title">把ESG问题放回供应链的四个环节</title>
+  <desc id="desc">根据原报告第三章供应链四维框架重新绘制的方法图。原料端、生产端、物流端和管理端分别对应采购、资源使用、履约和可追溯性问题。成本、品质、响应和风险是分析维度，并非已识别的因果效应。</desc>
+  <rect width="1200" height="640" rx="10" fill="#f6f5ef"/>
+  <g font-family="'Microsoft YaHei','PingFang SC',sans-serif">
+    <text x="52" y="55" fill="#647168" font-size="13" letter-spacing="2">蜜雪冰城 / 供应链分析</text>
+    <text x="52" y="107" fill="#202e28" font-size="33">把 ESG 问题，放回供应链的四个环节</text>
+    <text x="52" y="142" fill="#647168" font-size="16">从“成本优势”出发，追问它来自哪里、依赖什么条件。</text>
+    <g fill="#fdfcf8" stroke="#d8dcd0"><rect x="52" y="189" width="258" height="282" rx="6"/><rect x="332" y="189" width="258" height="282" rx="6"/><rect x="612" y="189" width="258" height="282" rx="6"/><rect x="892" y="189" width="256" height="282" rx="6"/></g>
+    <g fill="#28513f" font-size="13" letter-spacing="1"><text x="76" y="224">01 / 原料采购</text><text x="356" y="224">02 / 生产组织</text><text x="636" y="224">03 / 仓储配送</text><text x="916" y="224">04 / 管理反馈</text></g>
+    <g fill="#202e28" font-size="26"><text x="76" y="268">原料端</text><text x="356" y="268">生产端</text><text x="636" y="268">物流端</text><text x="916" y="268">管理端</text></g>
+    <g fill="#647168" font-size="16"><text x="76" y="311">全球直采与本土适配</text><text x="356" y="311">规模化与区域化布局</text><text x="636" y="311">本地仓储与配送网络</text><text x="916" y="311">数据协同与过程留痕</text></g>
+    <g stroke="#d8dcd0"><path d="M76 337H286M356 337H566M636 337H846M916 337H1124"/></g>
+    <g fill="#a56e45" font-size="13"><text x="76" y="367">需要追踪的变量</text><text x="356" y="367">需要追踪的变量</text><text x="636" y="367">需要追踪的变量</text><text x="916" y="367">需要追踪的变量</text></g>
+    <g fill="#202e28" font-size="15"><text x="76" y="400">采购价格 · 资质 · 来源</text><text x="76" y="432">供应商责任与供应稳定性</text><text x="356" y="400">利用率 · 品控 · 资源消耗</text><text x="356" y="432">规模收益与环境负担</text><text x="636" y="400">库存 · 时效 · 损耗</text><text x="636" y="432">服务半径与运输条件</text><text x="916" y="400">可追溯性 · 审核 · 响应</text><text x="916" y="432">合规与异常处理能力</text></g>
+    <rect x="52" y="501" width="1096" height="61" rx="5" fill="#28513f"/>
+    <text x="600" y="539" text-anchor="middle" fill="#f6f5ef" font-size="19">采购 → 生产 → 配送 → 门店反馈　｜　成本 · 品质 · 响应 · 风险</text>
+    <text x="52" y="601" fill="#647168" font-size="13">依据：原 DOCX 第三章图三-4（图目录标注第33页）及相邻正文。网页重绘变量框架，箭头表示分析流程。</text>
+    <text x="52" y="624" fill="#647168" font-size="13">框架用于组织案例证据；具体绩效改善及其归因仍需回到数据与比较条件。</text>
+  </g>
+</svg>

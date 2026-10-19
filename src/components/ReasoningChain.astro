@@ -1,0 +1,59 @@
+---
+import { getReasoningChain } from '../data/reasoning-chains';
+
+interface Props { slug: string; title?: string }
+const { slug, title = '识别问题，推动解决' } = Astro.props;
+const chain = getReasoningChain(slug);
+const prefix = `reasoning-${slug}`;
+---
+
+{chain && <section class="reasoning-chain" data-reasoning-chain aria-labelledby={`${prefix}-title`}>
+  <header class="reasoning-heading"><span>研究逻辑链</span><h3 id={`${prefix}-title`}>{title}</h3><p>{chain.intro}</p></header>
+  <div class="reasoning-track" role="tablist" aria-label="选择研究推进阶段" style={`--step-count:${chain.steps.length}`}>
+    {chain.steps.map((step, index) => <button type="button" role="tab" id={`${prefix}-tab-${index}`} aria-controls={`${prefix}-panel-${index}`} aria-selected={index === 0} tabindex={index === 0 ? 0 : -1} data-reasoning-tab={index}>
+      <span class="reasoning-step-top"><span class="reasoning-number">{String(index + 1).padStart(2, '0')}</span><span class:list={['reasoning-status', { 'is-pending': step.status === '拟验证', 'is-failed': step.status === '未通过' }]}>{step.status}</span></span>
+      <strong>{step.label}</strong><span class="reasoning-short">{step.title}</span><span class="reasoning-arrow" aria-hidden="true">→</span>
+    </button>)}
+  </div>
+  <p class="reasoning-mobile-hint">左右滑动阶段，点击查看思考、依据与产出。</p>
+  {chain.steps.map((step, index) => <div class="reasoning-panel" role="tabpanel" id={`${prefix}-panel-${index}`} aria-labelledby={`${prefix}-tab-${index}`} tabindex="0" data-reasoning-panel={index} hidden={index !== 0}>
+    <div class="reasoning-panel-title"><span class="reasoning-number">第 {index + 1} 步 / 共 {chain.steps.length} 步</span><h4>{step.title}</h4></div>
+    <dl class="reasoning-detail"><div><dt>思考与行动</dt><dd>{step.detail}</dd></div><div><dt>依据</dt><dd><ul>{step.evidence.map(item => <li>{item}</li>)}</ul></dd></div><div class="reasoning-output"><dt>阶段产出</dt><dd>{step.output}</dd></div></dl>
+  </div>)}
+  {chain.note && <p class="reasoning-note">{chain.note}</p>}
+</section>}
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-reasoning-chain]').forEach(chain => {
+    const tabs = Array.from(chain.querySelectorAll<HTMLButtonElement>('[data-reasoning-tab]'));
+    const panels = Array.from(chain.querySelectorAll<HTMLElement>('[data-reasoning-panel]'));
+    const select = (index: number, focus = false) => {
+      tabs.forEach((tab, i) => { tab.setAttribute('aria-selected', String(i === index)); tab.tabIndex = i === index ? 0 : -1; });
+      panels.forEach((panel, i) => { panel.hidden = i !== index; });
+      if (focus) tabs[index]?.focus({ preventScroll: true });
+      const active = tabs[index];
+      const track = active?.parentElement;
+      if (active && track && track.scrollWidth > track.clientWidth) track.scrollTo({ left: active.offsetLeft - track.offsetLeft - 12, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
+    };
+    tabs.forEach((tab, index) => {
+      tab.addEventListener('click', () => select(index));
+      tab.addEventListener('keydown', event => {
+        let next: number;
+        if (event.key === 'ArrowRight') next = (index + 1) % tabs.length;
+        else if (event.key === 'ArrowLeft') next = (index - 1 + tabs.length) % tabs.length;
+        else if (event.key === 'Home') next = 0;
+        else if (event.key === 'End') next = tabs.length - 1;
+        else return;
+        event.preventDefault();
+        select(next, true);
+      });
+    });
+  });
+</script>
+
+<style>
+  .reasoning-chain{min-width:0;background:var(--surface);border:1px solid var(--line);border-radius:4px;overflow:hidden}.reasoning-heading{padding:25px 28px 23px}.reasoning-heading>span{color:var(--muted);font-size:10px;letter-spacing:.09em}.reasoning-heading h3{font:26px/1.5 var(--serif);margin-top:8px}.reasoning-heading p{font-size:12px;line-height:1.95;margin-top:10px;max-width:660px}.reasoning-track{display:grid;grid-template-columns:repeat(var(--step-count),minmax(0,1fr));border-block:1px solid var(--line);background:var(--paper)}.reasoning-track button{position:relative;text-align:left;min-width:0;padding:17px 17px 18px;color:var(--muted);border:0;border-right:1px solid var(--line);transition:background .15s,color .15s}.reasoning-track button:last-child{border-right:0}.reasoning-track button:hover{background:var(--soft);color:var(--ink)}.reasoning-track button[aria-selected=true]{background:var(--green);color:var(--paper)}.reasoning-track button:focus-visible{outline:2px solid var(--accent);outline-offset:-4px;z-index:1}.reasoning-step-top{display:flex;gap:8px;align-items:center;justify-content:space-between;flex-wrap:wrap}.reasoning-number{font:9px/1.6 var(--mono);letter-spacing:.035em;opacity:.8}.reasoning-status{font-size:8px;line-height:1.6;white-space:nowrap}.reasoning-status.is-pending,.reasoning-status.is-failed{color:var(--accent)}.reasoning-track button[aria-selected=true] .reasoning-status{color:inherit;opacity:.85}.reasoning-track strong{display:block;font-size:13px;font-weight:500;margin-top:15px;letter-spacing:.02em}.reasoning-short{display:block;font-size:9px;line-height:1.8;margin-top:7px;padding-right:8px;opacity:.85}.reasoning-arrow{position:absolute;right:12px;bottom:14px;font-size:13px;opacity:.5}.reasoning-track button:last-child .reasoning-arrow{display:none}.reasoning-panel{padding:26px 28px 27px;min-height:292px}.reasoning-panel:focus-visible{outline-offset:-5px}.reasoning-panel-title>.reasoning-number{font-size:9px;color:var(--muted)}.reasoning-panel-title h4{font:23px/1.5 var(--serif);margin-top:7px}.reasoning-detail{margin-top:21px}.reasoning-detail>div{display:grid;grid-template-columns:79px 1fr;gap:18px;padding:13px 0;border-top:1px solid var(--line);align-items:start}.reasoning-detail dt{font-size:10px;color:var(--muted);padding-top:1px}.reasoning-detail dd{font-size:12px;color:var(--muted);line-height:1.95}.reasoning-detail ul{padding:0;margin:0;list-style:none}.reasoning-detail li+li{margin-top:5px}.reasoning-output dd{color:var(--ink);font-weight:400}.reasoning-note{font-size:9px;line-height:1.9;border-top:1px solid var(--line);padding:14px 28px;background:var(--paper);color:var(--muted)}.reasoning-mobile-hint{display:none}
+  @media(max-width:1050px){.reasoning-track button{padding-inline:12px}.reasoning-step-top{gap:4px}.reasoning-track strong{font-size:12px}.reasoning-short{font-size:9px}.reasoning-arrow{right:7px;font-size:11px}}
+  @media(max-width:720px){.reasoning-heading{padding:22px 18px 20px}.reasoning-heading h3{font-size:23px}.reasoning-heading p{font-size:11px}.reasoning-track{grid-template-columns:repeat(var(--step-count),minmax(142px,1fr));overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:thin}.reasoning-track button{padding:15px 14px 18px}.reasoning-track strong{font-size:13px;margin-top:12px}.reasoning-step-top{flex-wrap:nowrap}.reasoning-short{font-size:9px;padding-right:12px}.reasoning-mobile-hint{display:block;padding:10px 18px 0;font-size:9px;color:var(--muted)}.reasoning-panel{padding:20px 18px 21px;min-height:0}.reasoning-panel-title h4{font-size:22px}.reasoning-detail{margin-top:18px}.reasoning-detail>div{grid-template-columns:1fr;gap:6px;padding:13px 0}.reasoning-detail dt{font-size:9px}.reasoning-detail dd{font-size:11px}.reasoning-note{padding:13px 18px;font-size:9px}}
+  @media(prefers-reduced-motion:reduce){.reasoning-track button{transition:none}}
+</style>

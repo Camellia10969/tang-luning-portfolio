@@ -1,0 +1,49 @@
+---
+import Layout from '../layouts/Layout.astro';
+const base = import.meta.env.BASE_URL;
+const references = [
+  {name: '项目案例集 · erlandv', type: '案例结构 / GitHub', url: 'https://github.com/erlandv/case', observation: '以问题、约束、关键决策和结果组织项目，让读者看到作品背后的思考。', application: '每个项目按研究问题、过程、方法、阻碍与证据展开；个人贡献单独列出。'},
+  {name: 'Distill · 交互文章', type: '交互解释 / 研究传播', url: 'https://distill.pub/2020/communicating-with-interactive-articles/', observation: '讨论如何借助按需展开、参数操作与多种表示，帮助读者理解复杂系统。', application: '用披露表述切换和模型评价口径切换解释研究；绿色金融规格切换连接真实估计底表。'},
+  {name: 'Bruno Simon · 2025 作品集', type: '探索体验 / GitHub', url: 'https://github.com/brunosimon/folio-2025', observation: '把浏览作品集设计为可探索的体验，让读者通过操作认识作者的工作。', application: '将首页做成可切换的研究地图，保留明确的项目入口与文字阅读路径。'},
+  {name: 'Linear', type: '信息层级 / 行业产品', url: 'https://linear.app/', observation: '以清晰的版式层级、克制的控件和紧凑的信息组织呈现复杂产品。', application: '使用统一的文字、边线、间距和状态表达；让交互服务于阅读和检查证据。'},
+];
+---
+<Layout title="设计参考与内容说明 · 唐露宁" description="作品集的设计参考、内容来源和公开范围。">
+  <article class="ref-page wrap">
+    <div class="breadcrumb"><a href={base}>作品集</a><span>/</span><span>设计参考与内容说明</span></div>
+    <p class="eyebrow">说明 / 设计参考与内容来源</p>
+    <h1>让形式服务于理解。</h1>
+    <p>这个作品集面向 AI 产品与研究方向的实习交流：先呈现值得追问的问题，再展示过程、判断和可检查的证据。以下参考启发了信息组织与交互方向；本站页面、组件与图形按实际研究内容独立实现。</p>
+
+    <section aria-labelledby="design-references">
+      <h2 id="design-references">设计与交互参考</h2>
+      <div class="ref-cards">
+        {references.map(item => <div>
+          <p class="small-label">{item.type}</p>
+          <h3><a href={item.url} target="_blank" rel="noopener noreferrer">{item.name} <span aria-hidden="true">↗</span><span class="sr-only">（新窗口打开）</span></a></h3>
+          <p>{item.observation}</p>
+          <p><strong>本站的转化：</strong>{item.application}</p>
+        </div>)}
+      </div>
+    </section>
+
+    <section aria-labelledby="content-sources">
+      <h2 id="content-sources">内容与证据</h2>
+      <ul>
+        <li><strong>履历：</strong>教育、实习与团队经历根据本人最新简历整理。研究图表与产出计数来自本人经历记录，未逐项独立审计。</li>
+        <li><strong>ESG 研究：</strong>历史分类基线与当前结构化抽取分阶段展示；交叉验证、留出测试和合成实验各自注明口径。示意台使用预先设计的示例，用于解释判别规则。</li>
+        <li><strong>绿色金融研究：</strong>依据本人第七稿工作论文及估计底表。五张图保留论文原图，规格切换使用六组真实估计结果。</li>
+        <li><strong>数字普惠金融：</strong>依据用户提供的完整论文整理研究内容；具体参与范围和可复现程度以项目页标注为准。</li>
+        <li><strong>产业专题：</strong>区分本人负责的报告板块与持有的参考资料；工艺关系图由本站重新绘制，历史行业判断保留资料时点。</li>
+      </ul>
+    </section>
+
+    <section aria-labelledby="scope-note">
+      <h2 id="scope-note">公开范围</h2>
+      <p>页面提供研究摘要、个人贡献和必要的证据图。原始简历、研究底稿、标注数据及券商报告保留在本地。涉及机构版权或贡献范围待核对的资料，页面仅整理概念与研究方法。</p>
+      <p>绿色金融工作论文原稿的全文分享将单独确认；如需进一步了解研究方法或交流岗位，欢迎通过 <a href="mailto:481200839@qq.com">481200839@qq.com</a> 联系。</p>
+    </section>
+    <p class="source-note">参考页面核验日期：2026 年 10 月 19 日。研究阶段与指标更新日期见各项目的来源说明。</p>
+    <p style="margin-top: 30px"><a href={base}>返回作品集 ↗</a></p>
+  </article>
+</Layout>

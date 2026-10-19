@@ -1,0 +1,61 @@
+---
+import estimates from '../data/green-specs.json';
+const labels = ['新疆 11 地州 · 基准', '新疆 11 地州 · 城市趋势', '新疆 10 地州 · 完整观测', '新疆 10 地州 · 资源暴露 × 年份', '37 城 · 新疆标签分配', '37 城 · 城市趋势'];
+const specs = estimates.map((d, i) => ({ ...d, label: labels[i] }));
+const first = specs[0];
+const x = (n: number) => 235 + ((n + 0.1) / 1.25) * 440;
+const ticks = [0, 0.2, 0.4, 0.6, 0.8, 1, 1.2];
+---
+<div class="spec-chart" data-spec-chart>
+  <label for="specification-select">选择一个规格，对照估计值与不确定性</label>
+  <select id="specification-select" data-spec-select aria-describedby="specification-note">
+    {specs.map((s, i) => <option value={i}>{s.label}</option>)}
+  </select>
+  <div class="spec-plot" tabindex="0" role="group" aria-label="规格比较图，窄屏可横向滚动">
+  <svg viewBox="0 0 710 315" role="img" aria-label="六种规格的燃烧相关污染指数估计值与 95% 城市聚类区间">
+    <title>燃烧相关污染指数：六种规格的比较</title>
+    <desc>横轴为估计值。所有规格的点估计为正，加入城市趋势的两个规格的区间跨过零。详细数值可通过上方选择框读取。</desc>
+    <line x1={x(0)} x2={x(0)} y1="24" y2="265" stroke="currentColor" stroke-opacity="0.28" stroke-dasharray="4 4" />
+    {specs.map((s, i) => <g data-spec-row={i} opacity={i === 0 ? '1' : '0.45'}>
+      <text x="0" y={51 + i * 39}>{s.label}</text>
+      <line x1={x(s.ci_low)} x2={x(s.ci_high)} y1={47 + i * 39} y2={47 + i * 39} stroke="var(--green)" stroke-width="2" />
+      <line x1={x(s.ci_low)} x2={x(s.ci_low)} y1={42 + i * 39} y2={52 + i * 39} stroke="var(--green)" stroke-width="2" />
+      <line x1={x(s.ci_high)} x2={x(s.ci_high)} y1={42 + i * 39} y2={52 + i * 39} stroke="var(--green)" stroke-width="2" />
+      <circle cx={x(s.coefficient)} cy={47 + i * 39} r="5" fill="var(--green)" />
+    </g>)}
+    <line x1="235" x2="693" y1="272" y2="272" stroke="currentColor" stroke-opacity="0.16" />
+    {ticks.map(t => <text x={x(t)} y="293" text-anchor="middle">{t.toFixed(1)}</text>)}
+    <text x="445" y="312" text-anchor="middle">估计值 · 横线为 95% 城市聚类区间</text>
+  </svg>
+  </div>
+  <p class="spec-mobile-hint">横向滑动图表可查看全部区间，或使用上方选择框读取数值。</p>
+  <dl class="spec-numbers" aria-live="polite" aria-atomic="true">
+    <div><dt>点估计</dt><dd data-spec-beta>{first.coefficient.toFixed(3)}</dd></div>
+    <div><dt>95% 区间</dt><dd data-spec-ci>{first.ci_low.toFixed(3)}–{first.ci_high.toFixed(3)}</dd></div>
+    <div><dt>置换 p / 分配数</dt><dd data-spec-p>{first.ri_p.toFixed(4)} / {first.permutation_n}</dd></div>
+    <div><dt>观测数 / 地州（城市）</dt><dd data-spec-n>{first.N} / {first.n_cities}</dd></div>
+  </dl>
+  <p class="source-note" id="specification-note">来源：本人工作论文第七稿表 4、图 5 对应估计底表；2015—2023 年。网页读取真实估计值，仅切换展示。城市聚类区间仅作辅助；置换 p 衡量给定地州标签分配空间中的统计极端性。试点选址并非随机，不能将其解释为无条件精确的因果检验。37 城规格的估计样本与新疆标签分配空间分别解释。</p>
+  <script type="application/json" data-spec-data set:html={JSON.stringify(specs).replace(/</g, '\\u003c')} />
+</div>
+<script>
+  type Estimate = { coefficient: number; ci_low: number; ci_high: number; ri_p: number; permutation_n: number; N: number; n_cities: number };
+  document.querySelectorAll<HTMLElement>('[data-spec-chart]').forEach(chart => {
+    const data = JSON.parse(chart.querySelector('[data-spec-data]')!.textContent!) as Estimate[];
+    const select = chart.querySelector<HTMLSelectElement>('[data-spec-select]')!;
+    select.addEventListener('change', () => {
+      const selected = Number(select.value);
+      const s = data[selected];
+      chart.querySelector('[data-spec-beta]')!.textContent = s.coefficient.toFixed(3);
+      chart.querySelector('[data-spec-ci]')!.textContent = `${s.ci_low.toFixed(3)}–${s.ci_high.toFixed(3)}`;
+      chart.querySelector('[data-spec-p]')!.textContent = `${s.ri_p.toFixed(4)} / ${s.permutation_n}`;
+      chart.querySelector('[data-spec-n]')!.textContent = `${s.N} / ${s.n_cities}`;
+      chart.querySelectorAll<SVGGElement>('[data-spec-row]').forEach(row => row.setAttribute('opacity', Number(row.dataset.specRow) === selected ? '1' : '0.45'));
+    });
+  });
+</script>
+<style>
+  .spec-plot{overflow-x:auto;overscroll-behavior-x:contain;max-width:100%;scrollbar-width:thin}
+  .spec-mobile-hint{display:none}
+  @media(max-width:720px){.spec-plot svg{width:660px;max-width:none}.spec-mobile-hint{display:block;font-size:9px;color:var(--muted);margin-top:8px}}
+</style>

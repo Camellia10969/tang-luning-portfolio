@@ -1,0 +1,74 @@
+[
+  {
+    "analysis_id": "COMB_XJ_BASE",
+    "coefficient": 0.5952273276981757,
+    "se": 0.2351097959700977,
+    "ci_low": 0.13441212759678417,
+    "ci_high": 1.056042527799567,
+    "ri_p": 0.006060606060606,
+    "permutation_n": 165,
+    "N": 99.0,
+    "n_cities": 11,
+    "year_range": "2015-2023"
+  },
+  {
+    "analysis_id": "COMB_XJ_TREND",
+    "coefficient": 0.5275761311645407,
+    "se": 0.2947181534476806,
+    "ci_low": -0.05007144959291321,
+    "ci_high": 1.1052237119219948,
+    "ri_p": 0.0545454545454545,
+    "permutation_n": 165,
+    "N": 99.0,
+    "n_cities": 11,
+    "year_range": "2015-2023"
+  },
+  {
+    "analysis_id": "COMB_XJ10_BASE",
+    "coefficient": 0.6298816881331429,
+    "se": 0.2401160555547918,
+    "ci_low": 0.15925421924575106,
+    "ci_high": 1.1005091570205348,
+    "ri_p": 0.0083333333333333,
+    "permutation_n": 120,
+    "N": 90.0,
+    "n_cities": 10,
+    "year_range": "2015-2023"
+  },
+  {
+    "analysis_id": "COMB_XJ10_EXPOSURE_YEAR",
+    "coefficient": 0.6043021121642127,
+    "se": 0.2267435073900251,
+    "ci_low": 0.15988483767976353,
+    "ci_high": 1.048719386648662,
+    "ri_p": 0.025,
+    "permutation_n": 120,
+    "N": 90.0,
+    "n_cities": 10,
+    "year_range": "2015-2023"
+  },
+  {
+    "analysis_id": "COMB_FULL37_BASE",
+    "coefficient": 0.5977820951292767,
+    "se": 0.2197328148927928,
+    "ci_low": 0.1671057779394028,
+    "ci_high": 1.0284584123191507,
+    "ri_p": 0.006060606060606,
+    "permutation_n": 165,
+    "N": 333.0,
+    "n_cities": 37,
+    "year_range": "2015-2023"
+  },
+  {
+    "analysis_id": "COMB_FULL37_TREND",
+    "coefficient": 0.5084353814119327,
+    "se": 0.2796969783455837,
+    "ci_low": -0.0397706961454114,
+    "ci_high": 1.0566414589692767,
+    "ri_p": 0.0545454545454545,
+    "permutation_n": 165,
+    "N": 333.0,
+    "n_cities": 37,
+    "year_range": "2015-2023"
+  }
+]

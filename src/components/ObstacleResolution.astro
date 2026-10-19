@@ -1,0 +1,4 @@
+---
+const { items } = Astro.props;
+---
+<div class="obstacle-list">{items.map((item:{title:string;problem:string;resolution:string},i:number)=><details><summary><span class="mono">0{i+1}</span>{item.title}<span class="details-sign" aria-hidden="true">+</span></summary><div class="details-body"><p>{item.problem}</p><h4>处理方法</h4><p>{item.resolution}</p></div></details>)}</div>

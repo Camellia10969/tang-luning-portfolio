@@ -1,0 +1,93 @@
+---
+import evidence from '../data/c3c4-charts.json';
+
+type POYear = { year: number; capacity: number; production: number; utilization: number };
+const rows = evidence.poSeries as POYear[];
+const metrics = [
+  { key: 'capacity' as const, label: '产能', unit: evidence.units.capacity, heading: '观察供给扩张', note: '产能表示生产能力，需结合实际产出和装置利用率理解。' },
+  { key: 'production' as const, label: '产量', unit: evidence.units.production, heading: '观察实际产出', note: '产量按年度总量展示；原表表头为“年产量（万吨/年）”，原始数字保持不变。' },
+  { key: 'utilization' as const, label: '产能利用率', unit: '%', heading: '观察装置负荷', note: '采用报告原表利用率，不以产量与产能之比替代。' },
+];
+const first = rows[0];
+const last = rows[rows.length - 1];
+const left = 52, right = 742, top = 28, bottom = 249;
+const x = (index: number) => left + ((index + .5) / rows.length) * (right - left);
+const number = (value: number) => value.toLocaleString('zh-CN', { maximumFractionDigits: 2 });
+const scale = (values: number[]) => {
+  const raw = Math.max(...values) / 5;
+  const power = 10 ** Math.floor(Math.log10(raw));
+  const step = ([1, 1.5, 2, 2.5, 5, 10].find(n => n * power >= raw) ?? 10) * power;
+  return { max: step * 5, ticks: Array.from({ length: 6 }, (_, i) => i * step) };
+};
+const originals = [
+  { name: 'C3 产品与应用概览', file: 'c3-original.png', caption: '从丙烷、丙烯到下游产品与应用，查看报告中的产品分组。' },
+  { name: 'C4 产品与应用概览', file: 'c4-original.png', caption: '查看碳四原料衍生产品及其对应的应用领域。' },
+];
+---
+
+<div class="c3-evidence" data-c3-evidence>
+  <figure class="c3-chart" aria-labelledby="c3-chart-title" aria-describedby="c3-chart-source">
+    <header class="c3-heading">
+      <div><span class="c3-kicker">从报告走向可交互证据</span><h3 id="c3-chart-title">环氧丙烷：扩张与负荷</h3></div>
+      <span class="c3-period">{first.year}—{last.year} 年 · 国内行业</span>
+    </header>
+    <p class="c3-intro">切换三个指标，对照产能扩张、实际产出与装置利用情况。</p>
+    <div class="c3-toolbar">
+      <div class="c3-switch" role="group" aria-label="选择环氧丙烷指标">
+        {metrics.map((metric, index) => <button type="button" data-c3-select={metric.key} aria-pressed={index === 0} aria-controls={`c3-panel-${metric.key}`}>{metric.label}</button>)}
+      </div>
+      <span class="c3-data-tag">报告原表数据</span>
+    </div>
+    {metrics.map((metric, index) => {
+      const { max, ticks } = scale(rows.map(row => row[metric.key]));
+      const y = (value: number) => bottom - (value / max) * (bottom - top);
+      const isRate = metric.key === 'utilization';
+      return <div class="c3-panel" id={`c3-panel-${metric.key}`} data-c3-panel={metric.key} hidden={index !== 0}>
+        <div class="c3-reading"><span>{metric.heading}</span><span>单位：{metric.unit}</span></div>
+        <div class="c3-plot" tabindex="0" role="group" aria-label={`${metric.label}图，窄屏可横向滑动；完整数据见下方表格`}>
+          <svg viewBox="0 0 780 302" role="img" aria-label={`${first.year}年至${last.year}年国内环氧丙烷${metric.label}`}>
+            <title>国内环氧丙烷{metric.label}，{first.year}—{last.year} 年</title>
+            <desc>{rows.map(row => `${row.year}年：${number(row[metric.key])}${metric.unit}`).join('；')}。数值来自报告原表。</desc>
+            {ticks.map(tick => <g><line x1={left} x2={right} y1={y(tick)} y2={y(tick)} class="c3-grid" /><text x={left - 12} y={y(tick) + 4} text-anchor="end" class="c3-tick">{number(tick)}</text></g>)}
+            {isRate && <polyline points={rows.map((row, i) => `${x(i)},${y(row[metric.key])}`).join(' ')} fill="none" stroke="var(--accent)" stroke-width="2.5" />}
+            {rows.map((row, i) => <g class="c3-observation" tabindex="0" aria-label={`${row.year}年${metric.label}${number(row[metric.key])}${metric.unit}`}>
+              <title>{row.year} 年 · {metric.label} {number(row[metric.key])} {metric.unit}</title>
+              {isRate ? <><circle cx={x(i)} cy={y(row[metric.key])} r="5" fill="var(--accent)" stroke="var(--surface)" stroke-width="2" /><circle class="c3-halo" cx={x(i)} cy={y(row[metric.key])} r="10" fill="none" stroke="var(--accent)" /></> : <rect x={x(i) - 22} y={y(row[metric.key])} width="44" height={bottom - y(row[metric.key])} fill={i === rows.length - 1 ? 'var(--green)' : 'var(--green)'} opacity={i === rows.length - 1 ? '1' : '.55'} rx="2" />}
+              <text x={x(i)} y={y(row[metric.key]) - 13} text-anchor="middle" class="c3-value">{number(row[metric.key])}{isRate ? '%' : ''}</text>
+              <text x={x(i)} y={bottom + 27} text-anchor="middle" class="c3-year">{row.year}</text>
+            </g>)}
+          </svg>
+        </div>
+        <div class="c3-reading-note"><span class="c3-latest">{last.year} 年<strong>{number(last[metric.key])}<small>{metric.unit}</small></strong></span><p>{metric.note}</p></div>
+      </div>;
+    })}
+    <figcaption id="c3-chart-source"><span>来源：《公司深度 碳三碳四板块》{evidence.source.locator}。</span><p>{evidence.source.note}</p><p>原资料：{evidence.source.originalAttribution}。</p><p>{evidence.source.publicVerification.map((s,i)=><><a href={s.url} target="_blank" rel="noopener noreferrer" title={s.status}>{s.title} ↗</a>{i===0?'　·　':''}</>)}</p></figcaption>
+    <details class="c3-table-disclosure"><summary><span>查看完整数据与口径</span><span aria-hidden="true">＋</span></summary><div class="c3-table-wrap"><table><caption>报告原表：国内环氧丙烷产能、产量及产能利用率</caption><thead><tr><th scope="col">年份</th><th scope="col">产能<br /><small>万吨/年</small></th><th scope="col">产量<br /><small>万吨 · 年度总量</small></th><th scope="col">产能利用率<br /><small>报告值</small></th></tr></thead><tbody>{rows.map(row => <tr><th scope="row">{row.year}</th><td>{number(row.capacity)}</td><td>{number(row.production)}</td><td>{number(row.utilization)}%</td></tr>)}</tbody></table><ul class="c3-data-notes">{evidence.dataNotes.map(note => <li>{note}</li>)}</ul></div></details>
+  </figure>
+
+  <div class="c3-originals-heading"><span class="c3-kicker">回到报告原图</span><h3>沿着产品，连接下游应用</h3><p>两张原图展示产品与应用的分组关系；图中各行不代表一一对应的唯一反应路径。</p></div>
+  <div class="c3-originals">{originals.map(figure => {
+    const src = `${import.meta.env.BASE_URL}assets/industry/${figure.file}`;
+    return <figure class="c3-original"><button type="button" data-figure={src} data-caption={figure.name} aria-label={`放大查看${figure.name}`}><img src={src} alt={figure.name} loading="lazy" decoding="async" /><span>放大原图 ↗</span></button><figcaption><h4>{figure.name}</h4><p>{figure.caption}</p><small>《公司深度 碳三碳四板块》§3.2 · 报告原图<br />原资料：长城证券产业金融研究院</small></figcaption></figure>;
+  })}</div>
+  <details class="c3-methods"><summary><span>继续对照五条 PO 工艺路线</span><span aria-hidden="true">＋</span></summary><div class="c3-methods-body"><p>工艺的经济性，取决于原料、联产品与装置条件。</p><div class="c3-method-table"><table><caption class="sr-only">环氧丙烷五条工艺路线的定性比较</caption><thead><tr><th scope="col">工艺</th><th scope="col">原料</th><th scope="col">联产品或副产物</th><th scope="col">判断时需关注</th></tr></thead><tbody>{evidence.methods.map(method => <tr><th scope="row">{method.name}</th><td>{method.feedstock}</td><td>{method.byproduct}</td><td>{method.tradeoff}</td></tr>)}</tbody></table></div><p class="c3-method-source">来源：{evidence.methodSource.title}，{evidence.methodSource.locator}。{evidence.methodSource.note}</p></div></details>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-c3-evidence]').forEach(component => {
+    component.querySelectorAll<HTMLButtonElement>('[data-c3-select]').forEach(button => {
+      button.addEventListener('click', () => {
+        const key = button.dataset.c3Select;
+        component.querySelectorAll<HTMLButtonElement>('[data-c3-select]').forEach(item => item.setAttribute('aria-pressed', String(item === button)));
+        component.querySelectorAll<HTMLElement>('[data-c3-panel]').forEach(panel => { panel.hidden = panel.dataset.c3Panel !== key; });
+      });
+    });
+  });
+</script>
+
+<style>
+  .c3-evidence{margin-top:28px;min-width:0}.c3-chart{border:1px solid var(--line);border-radius:4px;background:var(--surface);padding:26px 28px 0;overflow:hidden}.c3-heading{display:flex;align-items:center;justify-content:space-between;gap:20px}.c3-kicker{font:10px/1.7 var(--sans);color:var(--muted);letter-spacing:.08em}.c3-heading h3,.c3-originals-heading h3{font:26px/1.45 var(--serif);margin-top:8px}.c3-period{font:10px var(--mono);color:var(--muted);white-space:nowrap}.c3-intro{font-size:12px;line-height:1.9;margin-top:13px}.c3-toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:23px 0 20px}.c3-switch{display:flex;border:1px solid var(--line);border-radius:3px;padding:3px;gap:3px}.c3-switch button{min-height:39px;padding:8px 17px;font-size:11px;border-radius:2px;color:var(--muted);transition:background .15s,color .15s}.c3-switch button:hover{background:var(--soft);color:var(--ink)}.c3-switch button[aria-pressed=true]{background:var(--green);color:var(--paper)}.c3-switch button:focus-visible{outline-offset:2px}.c3-data-tag{font-size:9px;color:var(--muted)}.c3-reading{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-bottom:7px}.c3-reading>span:first-child{color:var(--ink)}.c3-plot{overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:thin}.c3-plot svg{display:block;width:100%;height:auto}.c3-grid{stroke:var(--line);stroke-width:1}.c3-tick,.c3-year{font:11px var(--mono);fill:var(--muted)}.c3-value{font:13px var(--mono);fill:var(--ink)}.c3-observation{outline:none}.c3-observation rect{transition:opacity .15s}.c3-observation:hover rect,.c3-observation:focus rect{opacity:1}.c3-halo{opacity:0}.c3-observation:hover .c3-halo,.c3-observation:focus .c3-halo{opacity:.65}.c3-observation:focus text.c3-value{font-weight:700;text-decoration:underline}.c3-reading-note{display:grid;grid-template-columns:160px 1fr;gap:22px;align-items:center;border-block:1px solid var(--line);padding:17px 0;margin-top:2px}.c3-latest{font-size:10px;color:var(--muted)}.c3-latest strong{display:block;font:32px/1.3 var(--serif);color:var(--green);margin-top:3px;white-space:nowrap}.c3-latest small{font:9px var(--sans);margin-left:8px;color:var(--muted)}.c3-reading-note p{font-size:11px;line-height:1.9}.c3-chart>figcaption{padding:15px 0 18px;font-size:10px;color:var(--muted);line-height:1.9}.c3-chart>figcaption p{font-size:10px;margin-top:6px}.c3-table-disclosure{margin-inline:-28px;border-top:1px solid var(--line);border-bottom:0;background:var(--paper)}.c3-table-disclosure summary{padding:17px 28px;font-size:11px;display:flex;justify-content:space-between}.c3-table-disclosure summary:hover{background:var(--soft)}.c3-table-disclosure summary>span:last-child{font-size:17px;transition:transform .15s}.c3-table-disclosure[open] summary>span:last-child{transform:rotate(45deg)}.c3-table-wrap{padding:0 28px 23px;overflow-x:auto}.c3-table-wrap table{border-collapse:collapse;width:100%;text-align:right;font-size:11px;font-variant-numeric:tabular-nums;white-space:nowrap}.c3-table-wrap caption{text-align:left;font-size:10px;color:var(--muted);margin-bottom:12px}.c3-table-wrap th,.c3-table-wrap td{padding:10px 12px;border-bottom:1px solid var(--line);font-weight:400}.c3-table-wrap th:first-child{text-align:left;padding-left:0}.c3-table-wrap thead th{font-size:10px;color:var(--muted);line-height:1.7}.c3-table-wrap small{font-size:8px}.c3-table-wrap tbody tr:hover{background:var(--soft)}.c3-originals-heading{margin:37px 0 19px}.c3-originals-heading h3{font-size:24px}.c3-originals-heading p{font-size:11px;line-height:1.9;margin-top:11px}.c3-originals{display:grid;grid-template-columns:1fr 1fr;gap:18px}.c3-original{min-width:0;border:1px solid var(--line);background:var(--surface);border-radius:3px;overflow:hidden}.c3-original>button{position:relative;width:100%;padding:14px;display:block;background:#fff;aspect-ratio:1.27;overflow:hidden}.c3-original img{width:100%;height:100%;display:block;object-fit:contain;transition:transform .2s}.c3-original button:hover img{transform:scale(1.025)}.c3-original button>span{position:absolute;right:12px;bottom:12px;background:#28513f;color:#fdfcf8;padding:4px 9px;font-size:9px;border-radius:2px}.c3-original figcaption{border-top:1px solid var(--line);padding:17px 18px 18px}.c3-original h4{font:18px var(--serif)}.c3-original p{font-size:10px;line-height:1.9;margin-top:9px}.c3-original small{display:block;color:var(--muted);font-size:9px;line-height:1.9;margin-top:10px}
+  @media(max-width:720px){.c3-chart{padding:22px 17px 0}.c3-heading{display:block}.c3-heading h3{font-size:24px}.c3-period{display:block;font-size:9px;margin-top:10px}.c3-intro{font-size:11px}.c3-toolbar{margin-top:19px;display:block}.c3-switch{width:max-content;max-width:100%}.c3-switch button{padding:8px 12px;font-size:10px;min-height:42px}.c3-data-tag{display:block;margin-top:10px}.c3-plot svg{min-width:540px}.c3-reading{font-size:9px}.c3-reading-note{grid-template-columns:115px 1fr;gap:14px;padding:15px 0}.c3-latest strong{font-size:28px}.c3-latest small{font-size:8px;margin-left:5px}.c3-reading-note p{font-size:10px}.c3-chart>figcaption,.c3-chart>figcaption p{font-size:9px}.c3-table-disclosure{margin-inline:-17px}.c3-table-disclosure summary{padding:16px 17px}.c3-table-wrap{padding:0 17px 20px}.c3-table-wrap th,.c3-table-wrap td{padding:10px 8px;font-size:10px}.c3-originals{grid-template-columns:1fr;gap:17px}.c3-originals-heading{margin-top:29px}.c3-originals-heading h3{font-size:22px}.c3-original>button{aspect-ratio:auto;min-height:220px;max-height:440px}.c3-original img{height:auto;max-height:410px}.c3-original figcaption{padding:16px 17px}}
+  @media(prefers-reduced-motion:reduce){.c3-switch button,.c3-observation rect,.c3-table-disclosure summary>span:last-child,.c3-original img{transition:none}}
+  .c3-data-notes{padding-left:15px;margin:16px 0 0;color:var(--muted);font-size:9px;line-height:1.9}.c3-data-notes li+li{margin-top:5px}.c3-methods{margin-top:25px;border-top:1px solid var(--line)}.c3-methods summary{font-size:12px;justify-content:space-between;gap:20px;padding:18px 0}.c3-methods summary>span:last-child{font-size:17px}.c3-methods[open] summary>span:last-child{transform:rotate(45deg)}.c3-methods-body{padding:0 0 20px}.c3-methods-body>p{font-size:11px;line-height:1.9}.c3-method-table{overflow-x:auto;margin-top:15px;scrollbar-width:thin}.c3-method-table table{border-collapse:collapse;width:100%;min-width:590px;text-align:left;font-size:10px;line-height:1.9}.c3-method-table th,.c3-method-table td{border-bottom:1px solid var(--line);padding:13px 14px;vertical-align:top;font-weight:400}.c3-method-table thead th{color:var(--muted);padding-top:0}.c3-method-table th:first-child{white-space:nowrap;padding-left:0}.c3-method-table td:nth-child(2){width:21%}.c3-method-table td:nth-child(3){width:23%}.c3-method-table td:last-child{width:39%;padding-right:0;color:var(--muted)}.c3-method-table tbody tr:hover{background:var(--soft)}.c3-methods-body .c3-method-source{font-size:9px;color:var(--muted);margin-top:15px}
+</style>

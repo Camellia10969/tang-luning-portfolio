@@ -1,0 +1,130 @@
+{
+  "title": "把报告里的判断放回数据中",
+  "subtitle": "中国环氧丙烷产能、产量与开工率，2020—2025",
+  "source": {
+    "title": "本人负责的 C3/C4 板块研究材料",
+    "locator": "§3.2.1 中国环氧丙烷历年产能、产量及开工率",
+    "note": "历史报告口径。保留原表数字与年份标签；开工率采用报告值，未以产量除以产能替换。2024 年与红宝丽年度报告摘要核对；2025 年产能、产量另与其年度报告全文核对。其余年份尚未全部完成独立公开来源核验。",
+    "originalAttribution": "观研报告网、中国化工报微信公众号、巨潮资讯网、长城证券产业金融研究院",
+    "publicVerification": [
+      {
+        "year": 2024,
+        "title": "红宝丽 2024 年年度报告摘要",
+        "url": "https://epaper.stcn.com/att/202504/23/ZQ23B067-HJ_eBook.pdf",
+        "status": "独立公开来源支持产能、产量及开工率"
+      },
+      {
+        "year": 2025,
+        "title": "红宝丽 2025 年年度报告全文",
+        "url": "https://static.cninfo.com.cn/finalpage/2026-04-23/1225152414.PDF",
+        "status": "已核对 PDF 第 12、13、30 页：产能 866 万吨、产量 610 万吨。公开报告利用率为 70.4%，本研究表为 70%，按各自口径保留。"
+      }
+    ]
+  },
+  "units": {
+    "capacity": "万吨/年",
+    "production": "万吨",
+    "utilization": "%"
+  },
+  "poSeries": [
+    {
+      "year": 2020,
+      "capacity": 335,
+      "production": 270,
+      "utilization": 80,
+      "derivedUtilization": 80.6
+    },
+    {
+      "year": 2021,
+      "capacity": 405,
+      "production": 360,
+      "utilization": 90,
+      "derivedUtilization": 88.89
+    },
+    {
+      "year": 2022,
+      "capacity": 490.2,
+      "production": 380,
+      "utilization": 77.5,
+      "derivedUtilization": 77.52
+    },
+    {
+      "year": 2023,
+      "capacity": 612,
+      "production": 415,
+      "utilization": 67,
+      "derivedUtilization": 67.81
+    },
+    {
+      "year": 2024,
+      "capacity": 712,
+      "production": 526,
+      "utilization": 73.88,
+      "derivedUtilization": 73.88
+    },
+    {
+      "year": 2025,
+      "capacity": 866,
+      "production": 610,
+      "utilization": 70,
+      "derivedUtilization": 70.44
+    }
+  ],
+  "dataNotes": [
+    "产量在网页按年度总量标为万吨；原表表头为年产量（万吨/年）。",
+    "2021 年原表开工率为 90%，产量除以产能约为 88.89%；两者分开保留，未作静默校正。2020、2023 与 2025 也有四舍五入或口径差异。",
+    "个别年份的其他公开材料存在不同数字，网页保留本报告口径，不据此宣称唯一行业统计。",
+    "原表 2025 年未标记 E，网页沿用其年份标签，不擅自改为预测。"
+  ],
+  "methods": [
+    {
+      "name": "氯醇法",
+      "feedstock": "丙烯、氯气、氢氧化钙",
+      "byproduct": "含盐废水与废渣",
+      "tradeoff": "技术成熟、流程较短；需关注环保处理、改造投入与政策要求。"
+    },
+    {
+      "name": "PO/SM 法",
+      "feedstock": "乙苯、丙烯",
+      "byproduct": "苯乙烯（SM）",
+      "tradeoff": "联产品可分摊成本；收益同时暴露于苯乙烯价格，流程与投资要求较高。"
+    },
+    {
+      "name": "PO/MTBE 法",
+      "feedstock": "异丁烷、丙烯",
+      "byproduct": "MTBE",
+      "tradeoff": "联产品价值影响盈利；需结合 MTBE 供需与装置投资判断。"
+    },
+    {
+      "name": "HPPO 法",
+      "feedstock": "过氧化氢、丙烯",
+      "byproduct": "水",
+      "tradeoff": "副产物较少；需考虑过氧化氢成本、供应配套与投资。"
+    },
+    {
+      "name": "CHP 法",
+      "feedstock": "异丙苯、丙烯",
+      "byproduct": "异丙苯循环体系",
+      "tradeoff": "联产品市场暴露较低；需关注工艺技术和装置运行要求。"
+    }
+  ],
+  "methodSource": {
+    "title": "本人负责的 C3/C4 板块研究材料",
+    "locator": "§3.2.1 环氧丙烷生产工艺对比",
+    "note": "按报告整理为定性比较。原表成本数缺乏明确的原料价格时点与测算假设，未据此绘制成本排名。"
+  },
+  "figures": [
+    {
+      "src": "/assets/industry/c3-original.png",
+      "title": "C3 产业链",
+      "caption": "原报告分组示意图，展示原料、丙烯衍生物、下游产品与终端应用；列中位置不代表逐行一一对应的反应路径。",
+      "source": "本人负责的 C3/C4 板块研究材料；原图注明长城证券产业金融研究院"
+    },
+    {
+      "src": "/assets/industry/c4-original.png",
+      "title": "C4 产业链",
+      "caption": "原报告分组示意图，展示混合碳四深加工与应用；列中位置不代表逐行一一对应的反应路径。",
+      "source": "本人负责的 C3/C4 板块研究材料"
+    }
+  ]
+}

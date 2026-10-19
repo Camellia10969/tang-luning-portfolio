@@ -1,0 +1,97 @@
+{
+  "updated": "2026-10-19",
+  "policy": "原始研究与参考材料分开登记；不上传报告原件、私有路径或许可数据库。",
+  "visuals": [
+    {
+      "id": "green-specs",
+      "kind": "本人工作论文估计值重绘",
+      "source": "第七稿表4、图5对应估计底表",
+      "units": "政策前分项标准差指数",
+      "transformation": "仅选择六种规格展示，不重新估计",
+      "public_original_urls": []
+    },
+    {
+      "id": "green-originals",
+      "kind": "本人工作论文原图",
+      "source": "第七稿图1—5",
+      "transformation": "保留原图与图注",
+      "public_original_urls": []
+    },
+    {
+      "id": "esg-baseline",
+      "kind": "真实模型输出",
+      "source": "历史分类基线评估记录",
+      "transformation": "五折验证与留出测试分开展示",
+      "public_original_urls": []
+    },
+    {
+      "id": "esg-demo",
+      "kind": "人工示意例句",
+      "source": "本站原创的三类例句",
+      "transformation": "预设规则演示，无模型推断",
+      "public_original_urls": []
+    },
+    {
+      "id": "po-series",
+      "kind": "历史报告表格重绘",
+      "source": "本人负责的碳三碳四板块，§3.2.1",
+      "period": "2020—2025",
+      "units": {
+        "capacity": "万吨/年",
+        "production": "万吨",
+        "utilization": "%"
+      },
+      "transformation": "保留报告值；按产量除以产能的校核值另列",
+      "public_verification": [
+        {
+          "year": 2024,
+          "title": "红宝丽 2024 年年度报告摘要",
+          "url": "https://epaper.stcn.com/att/202504/23/ZQ23B067-HJ_eBook.pdf",
+          "status": "独立公开来源支持产能、产量及开工率"
+        },
+        {
+          "year": 2025,
+          "title": "红宝丽 2025 年年度报告全文",
+          "url": "https://static.cninfo.com.cn/finalpage/2026-04-23/1225152414.PDF",
+          "status": "已核对 PDF 第 12、13、30 页：产能 866 万吨、产量 610 万吨。公开报告利用率为 70.4%，本研究表为 70%，按各自口径保留。"
+        }
+      ],
+      "verification_scope": "2024 三项、2025 产能与产量已有公开原始披露支持；其他年份保留报告口径，不宣称独立核验完毕。"
+    },
+    {
+      "id": "c3-c4-originals",
+      "kind": "报告产品分组示意图",
+      "source": "本人负责的碳三碳四板块",
+      "transformation": "用户要求加入的两幅原图；保留资料归属；不展示模板、内部报告全文或联系方式",
+      "scope_note": "图中各列为产品/应用分组，不表示逐行唯一反应路径"
+    },
+    {
+      "id": "digital-finance",
+      "kind": "共同署名课程论文报告结果",
+      "source": "论文表2—3，PDF第5—7页",
+      "transformation": "保留实际系数和标准误，未独立重跑",
+      "public_original_urls": []
+    },
+    {
+      "id": "esg-method-illustration",
+      "kind": "原创生成方法插画",
+      "source": "依据本项目问题—证据—人工校准流程设计，内置图像生成工具制作",
+      "asset": "public/assets/esg/evidence-research.png",
+      "transformation": "无观测数据、企业评分或实验结果；可交互逻辑链另以网页精确呈现"
+    },
+    {
+      "id": "industry-selected-visuals",
+      "kind": "历史资料局部原图与真实数据重绘",
+      "source": "蛋氨酸PPT第4/17页；生物柴油PPT第6/24页；长丝路演第2—7页",
+      "registry": "src/data/industry-visuals.ts",
+      "transformation": "原页独立插图与图表缓存；保留单位、年度与核对范围，非全年数不混入全年趋势"
+    },
+    {
+      "id": "mixue-selected-visuals",
+      "kind": "原团队报告一幅局部图及两幅方法重绘",
+      "source": "同题DOCX第二章、第三章图三-1和三-4；页码按原目录",
+      "registry": "src/data/mixue-visuals.ts",
+      "transformation": "自建九议题五分制；未将评分解释为经营改善的因果效应"
+    }
+  ]
+}

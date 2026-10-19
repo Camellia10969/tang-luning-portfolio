@@ -1,0 +1,27 @@
+---
+---
+<div data-metric-evidence>
+  <div class="metric-tabs segmented" role="group" aria-label="切换历史基线的评价口径">
+    <button type="button" data-metric-tab="cv" aria-pressed="true" aria-controls="metric-cv">五折交叉验证</button>
+    <button type="button" data-metric-tab="holdout" aria-pressed="false" aria-controls="metric-holdout">独立留出集</button>
+  </div>
+  <div id="metric-cv" class="metric-board" data-metric-panel="cv" aria-live="polite">
+    <div class="metric-big">0.818<small>F1 · 四舍五入显示</small></div>
+    <div class="metric-copy"><h3>均值 0.81766 ± 0.04096</h3><p>历史 TF-IDF + 逻辑回归 基线；五折交叉验证的均值与标准差。这个结果描述开发阶段各折的表现。</p><p class="metric-source">来源：模型指标文件 → 交叉验证均值 / 标准差</p></div>
+  </div>
+  <div id="metric-holdout" class="metric-board" data-metric-panel="holdout" aria-live="polite" hidden>
+    <div class="metric-big">0.767<small>F1 · 四舍五入显示</small></div>
+    <div class="metric-copy"><h3>留出集 F1 = 0.7667 · 样本数 = 48</h3><p>旧版 189 条标签：141 条训练、48 条留出测试。这一结果与交叉验证分别报告，不能互相替代；新版结构化抽取仍待独立评估。</p><p class="metric-source">来源：模型指标文件 → F1 / 训练样本数 / 测试样本数</p></div>
+  </div>
+  <p class="source-note">F1 为精确率与召回率的调和均值。这里展示历史分类基线，评价范围不包含新版命题、属性与关系抽取。</p>
+</div>
+<script>
+  document.querySelectorAll<HTMLElement>('[data-metric-evidence]').forEach(widget => {
+    widget.querySelectorAll<HTMLButtonElement>('[data-metric-tab]').forEach(button => {
+      button.addEventListener('click', () => {
+        widget.querySelectorAll<HTMLButtonElement>('[data-metric-tab]').forEach(tab => tab.setAttribute('aria-pressed', String(tab === button)));
+        widget.querySelectorAll<HTMLElement>('[data-metric-panel]').forEach(panel => panel.hidden = panel.dataset.metricPanel !== button.dataset.metricTab);
+      });
+    });
+  });
+</script>

@@ -1,0 +1,12 @@
+---
+const { compact = false } = Astro.props;
+---
+<div class:list={['evidence-lab', { compact }]} data-lab>
+  <div class="lab-toolbar"><span><i class="status-dot"></i> 命题观察台</span><span class="mono">规则示意</span></div>
+  <div class="lab-main"><div class="lab-input"><div class="small-label">01 / 选择一种表述</div><div class="segmented" role="group" aria-label="切换示意命题"><button data-lab-type="promise" aria-pressed="true">承诺</button><button data-lab-type="action" aria-pressed="false">行动</button><button data-lab-type="result" aria-pressed="false">结果</button></div><blockquote data-lab-text>“公司计划于 <mark>2030 年</mark> 前，将运营环节碳排放较基准年降低 <mark>30%</mark>。”</blockquote><p class="lab-demo-note">人工编写的示意例句 · 用于解释分类规则</p></div><div class="lab-output" aria-live="polite" aria-atomic="true"><div class="small-label">02 / 查看证据结构</div><dl><div><dt>命题类型</dt><dd data-lab-class>C4 · 承诺与目标</dd></div><div><dt>状态</dt><dd data-lab-state>未来计划</dd></div><div><dt>可定位属性</dt><dd data-lab-attr>目标年 2030 / 降幅 30%</dd></div><div><dt>需要进一步核对</dt><dd data-lab-check>基准年、排放范围与目标边界</dd></div></dl><span class="lab-record mono">来源：示例 01 / 句子：01</span></div></div>
+  <div class="lab-bottom"><span>同一议题，不同证据状态。</span><span>规则演示 · 无模型推断</span></div>
+</div>
+<script>
+  const examples={promise:{html:'“公司计划于 <mark>2030 年</mark> 前，将运营环节碳排放较基准年降低 <mark>30%</mark>。”',cls:'C4 · 承诺与目标',state:'未来计划',attr:'目标年 2030 / 降幅 30%',check:'基准年、排放范围与目标边界',source:'示例 01'},action:{html:'“<mark>2025 年</mark>，公司在甲工厂完成余热回收系统改造，并开始按月记录设备运行情况。”',cls:'C5 · 已实施行动',state:'已完成改造 / 持续记录',attr:'时间 2025 / 范围 甲工厂 / 机制 余热回收',check:'投用记录、执行主体与原始凭据',source:'示例 02'},result:{html:'“<mark>2025 年</mark>，甲工厂用电量为 <mark>1,200 万千瓦时</mark>，较 2024 年减少 8%。”',cls:'C6 · 已观察结果',state:'报告期观测值',attr:'时间 2025 / 用电量 1,200 万千瓦时',check:'统计范围、对比口径与外部核验',source:'示例 03'}};
+  document.querySelectorAll<HTMLElement>('[data-lab]').forEach(lab=>{lab.querySelectorAll<HTMLButtonElement>('[data-lab-type]').forEach(b=>b.addEventListener('click',()=>{const e=examples[b.dataset.labType as keyof typeof examples];lab.querySelectorAll('[data-lab-type]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));lab.querySelector('[data-lab-text]')!.innerHTML=e.html;lab.querySelector('[data-lab-class]')!.textContent=e.cls;lab.querySelector('[data-lab-state]')!.textContent=e.state;lab.querySelector('[data-lab-attr]')!.textContent=e.attr;lab.querySelector('[data-lab-check]')!.textContent=e.check;lab.querySelector('.lab-record')!.textContent=`来源：${e.source} / 句子：01`; }));});
+</script>

@@ -1,0 +1,72 @@
+---
+import '../styles/global.css';
+import { projects, projectUrl } from '../data/projects';
+const { title = '唐露宁 · 研究 × AI', description = '从企业文本、政策评估到产业研究。唐露宁的 AI 产品与研究作品集。', current = '' } = Astro.props;
+const base = import.meta.env.BASE_URL;
+---
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#f6f5ef" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
+    <title>{title}</title>
+    <script is:inline>
+      try { const t=localStorage.getItem('tl-theme'); if(t) document.documentElement.dataset.theme=t; } catch {}
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">跳至正文</a>
+    <header class="site-header">
+      <a href={base} class="brand" aria-label="唐露宁作品集首页"><span class="monogram">tl<span>·</span></span><span class="brand-name">唐露宁<small>研究与人工智能</small></span></a>
+      <nav aria-label="主导航" class="desktop-nav">
+        <a href={`${base}#work`} aria-current={current === 'work' ? 'page' : undefined}>研究与项目</a>
+        <a href={`${base}#lab`}>交互实验室</a>
+        <a href={`${base}#about`}>关于我</a>
+      </nav>
+      <div class="header-actions">
+        <button class="search-trigger icon-button" data-open-search aria-label="搜索项目（Ctrl K）"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg><kbd>⌘ K</kbd></button>
+        <button class="icon-button theme-toggle" aria-label="切换明暗主题" title="切换明暗主题"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M20.5 14A8.5 8.5 0 0 1 10 3.5 8.5 8.5 0 1 0 20.5 14Z"/></svg></button>
+        <a href="mailto:481200839@qq.com" class="header-contact">联系我 <span aria-hidden="true">↗</span></a>
+        <button class="icon-button menu-toggle" aria-label="展开导航" aria-expanded="false" aria-controls="mobile-nav"><svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6"><path d="M4 8h16M4 16h16"/></svg></button>
+      </div>
+      <nav id="mobile-nav" class="mobile-nav" aria-label="移动端导航" hidden><a href={`${base}#work`}>研究与项目</a><a href={`${base}#lab`}>交互实验室</a><a href={`${base}#about`}>关于我</a><a href="mailto:481200839@qq.com">邮件联系 ↗</a></nav>
+    </header>
+    <main id="main"><slot /></main>
+    <footer class="site-footer wrap">
+      <a class="footer-wordmark" href={base}>唐露宁<span>让研究可感、可查。</span></a>
+      <p>以问题为起点，以证据为依据。</p><div><a href={`${base}references/`}>设计参考与内容说明 ↗</a><small>© 2026 唐露宁 · 手稿持续更新</small></div>
+    </footer>
+    <dialog class="search-dialog" id="search-dialog" aria-labelledby="search-title">
+      <div class="dialog-top"><h2 id="search-title">查找一个项目</h2><button class="icon-button" data-close-dialog aria-label="关闭搜索">✕</button></div>
+      <label class="sr-only" for="project-search">项目名称、方法或关键词</label>
+      <input type="search" id="project-search" placeholder="搜索 NLP、政策、产业链…" autocomplete="off" />
+      <div class="search-results" aria-live="polite">{projects.map(p=><a href={projectUrl(p.slug)} data-search-item={`${p.title} ${p.en} ${p.tags.join(' ')} ${p.category}`}><span><small>{p.category}</small>{p.title}</span><span aria-hidden="true">↗</span></a>)}</div>
+      <p id="search-empty" hidden>没有找到对应项目，试试“NLP”或“产业”。</p><div class="search-hint">按制表键选择项目 <span>按退出键关闭</span></div>
+    </dialog>
+    <dialog class="lightbox" id="figure-lightbox" aria-labelledby="lightbox-title"><div class="dialog-top"><h2 id="lightbox-title">研究图</h2><button class="icon-button" data-close-dialog aria-label="关闭放大图">✕</button></div><div class="lightbox-image"><img id="lightbox-img" alt="" /></div><p>可使用触控缩放查看细节 · 按退出键关闭</p></dialog>
+    <div class="toast" role="status" aria-live="polite" hidden></div>
+    <script>
+      const search=document.querySelector<HTMLDialogElement>('#search-dialog')!;
+      const input=document.querySelector<HTMLInputElement>('#project-search')!;
+      const openSearch=()=>{search.showModal(); input.focus();};
+      document.querySelector('[data-open-search]')?.addEventListener('click',openSearch);
+      document.addEventListener('keydown',e=>{if((e.metaKey||e.ctrlKey)&&e.key==='k'){e.preventDefault();if(!search.open)openSearch();}});
+      input.addEventListener('input',()=>{const q=input.value.trim().toLocaleLowerCase();let n=0;document.querySelectorAll<HTMLElement>('[data-search-item]').forEach(el=>{el.hidden=!el.dataset.searchItem!.toLocaleLowerCase().includes(q);if(!el.hidden)n++;});document.querySelector<HTMLElement>('#search-empty')!.hidden=n>0;});
+      document.querySelectorAll<HTMLDialogElement>('dialog').forEach(d=>{d.querySelector('[data-close-dialog]')?.addEventListener('click',()=>d.close());d.addEventListener('click',e=>{if(e.target===d){const r=d.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)d.close();}});});
+      document.querySelector('.theme-toggle')?.addEventListener('click',()=>{const dark=document.documentElement.dataset.theme==='dark';document.documentElement.dataset.theme=dark?'light':'dark';try{localStorage.setItem('tl-theme',dark?'light':'dark');}catch{}});
+      const menu=document.querySelector<HTMLButtonElement>('.menu-toggle')!;const nav=document.querySelector<HTMLElement>('#mobile-nav')!;
+      menu.addEventListener('click',()=>{nav.hidden=!nav.hidden;menu.setAttribute('aria-expanded',String(!nav.hidden));});
+      nav.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{nav.hidden=true;menu.setAttribute('aria-expanded','false');}));
+      const lb=document.querySelector<HTMLDialogElement>('#figure-lightbox')!;
+      document.querySelectorAll<HTMLButtonElement>('[data-figure]').forEach(b=>b.addEventListener('click',()=>{const img=document.querySelector<HTMLImageElement>('#lightbox-img')!;img.src=b.dataset.figure!;img.alt=b.dataset.caption!;document.querySelector('#lightbox-title')!.textContent=b.dataset.caption!;lb.showModal();}));
+      document.querySelectorAll<HTMLButtonElement>('[data-copy-mail]').forEach(b=>b.addEventListener('click',async()=>{const t=document.querySelector<HTMLElement>('.toast')!;try{await navigator.clipboard.writeText('481200839@qq.com');t.textContent='邮箱已复制';}catch{t.textContent='邮箱：481200839@qq.com';}t.hidden=false;setTimeout(()=>t.hidden=true,2400);}));
+      document.querySelectorAll<HTMLButtonElement>('[data-tour]').forEach(b=>b.addEventListener('click',()=>{const target=document.querySelector<HTMLElement>(b.dataset.tour!);target?.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth',block:'start'});target?.focus({preventScroll:true});}));
+    </script>
+  </body>
+</html>

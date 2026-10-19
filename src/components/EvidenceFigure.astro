@@ -1,0 +1,5 @@
+---
+const { n, title, caption } = Astro.props;
+const src = `${import.meta.env.BASE_URL}assets/green/figure-${n}.png`;
+---
+<figure class="evidence-figure"><button class="figure-button" data-figure={src} data-caption={`图 ${n} · ${title}`} aria-label={`放大图 ${n}：${title}`}><img src={src} alt={title} loading="lazy" decoding="async" /><span class="figure-zoom">放大 ↗</span></button><figcaption><strong>图 {n} · {title}</strong><span>{caption}</span><small>原始论文图 · 本人工作论文第七稿，图 {n}</small></figcaption></figure>

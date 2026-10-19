@@ -1,0 +1,82 @@
+---
+import { reportedDigitalCoefficients } from '../data/digital-project';
+const minimum = -0.05;
+const maximum = 0.175;
+const position = (value: number) => ((value - minimum) / (maximum - minimum)) * 100;
+const zero = position(0);
+const ticks = [-0.05, 0, 0.05, 0.1, 0.15];
+const signed = (value: number) => value < 0 ? `−${Math.abs(value).toFixed(3)}` : `+${value.toFixed(3)}`;
+---
+
+<figure class="digital-evidence" aria-labelledby="digital-evidence-title" aria-describedby="digital-evidence-caption">
+  <div class="digital-heading">
+    <div>
+      <span class="eyebrow">论文报告估计 / 2011—2023</span>
+      <h3 id="digital-evidence-title">拆开维度，看见不同方向</h3>
+    </div>
+    <span class="digital-sample">31 省 <i>·</i> 403 个观测</span>
+  </div>
+
+  <div class="digital-columns" aria-hidden="true"><span>解释变量</span><span>系数 · 对数弹性</span><span>估计值 / 标准误</span></div>
+  <ol class="digital-rows" aria-label="论文报告的四个单独回归系数与省份聚类标准误">
+    {reportedDigitalCoefficients.map((row) => (
+      <li class:list={['digital-row', { 'digital-negative': row.coefficient < 0 }]}
+        tabindex="0"
+        title={`${row.label}：系数 ${signed(row.coefficient)}；省份聚类标准误 ${row.standardError.toFixed(3)}；${row.source}`}
+        style={`--zero:${zero}%;--point:${position(row.coefficient)}%;--bar-left:${Math.min(zero, position(row.coefficient))}%;--bar-width:${Math.abs(position(row.coefficient) - zero)}%`}>
+        <span class="digital-label">{row.label}</span>
+        <div class="digital-track" aria-hidden="true">
+          {ticks.map(tick => <span class="digital-guide" style={`left:${position(tick)}%`} />)}
+          <span class="digital-zero" />
+          <span class="digital-bar" />
+          <span class="digital-point" />
+        </div>
+        <div class="digital-value"><strong>{signed(row.coefficient)}</strong><span>标准误 {row.standardError.toFixed(3)}</span></div>
+      </li>
+    ))}
+  </ol>
+  <div class="digital-axis" aria-hidden="true">
+    <div>{ticks.map(tick => <span style={`left:${position(tick)}%`}>{tick === 0 ? '0' : `${tick < 0 ? '−' : '+'}${Math.abs(tick).toFixed(2)}`}</span>)}</div>
+  </div>
+
+  <figcaption id="digital-evidence-caption">
+    <span>论文报告系数，未独立复现</span>
+    <p>来源：论文表 2—3，第 5—7 页。各变量分别回归；系数差异仍需正式检验。</p>
+  </figcaption>
+</figure>
+
+<style>
+  .digital-evidence{--row-color:var(--green);border:1px solid var(--line);background:var(--surface);padding:28px 30px 23px;border-radius:4px}
+  .digital-heading{display:flex;justify-content:space-between;align-items:center;gap:18px;margin-bottom:31px}
+  .digital-heading .eyebrow{font-size:8px;letter-spacing:.13em}
+  .digital-heading h3{font-family:var(--serif);font-size:24px;font-weight:400;margin-top:9px}
+  .digital-sample{font-size:9px;color:var(--muted);white-space:nowrap;border:1px solid var(--line);padding:6px 10px;border-radius:2px}
+  .digital-sample i{font-style:normal;margin-inline:5px;color:var(--accent)}
+  .digital-columns,.digital-row{display:grid;grid-template-columns:100px minmax(0,1fr) 90px;gap:18px;align-items:center}
+  .digital-columns{font-size:9px;color:var(--muted);border-bottom:1px solid var(--line);padding-bottom:12px}
+  .digital-columns>span:last-child{text-align:right}
+  .digital-rows{list-style:none;margin:0;padding:0}
+  .digital-row{position:relative;min-height:75px;border-bottom:1px solid var(--line);transition:background .15s}
+  .digital-row:hover,.digital-row:focus-visible{background:var(--soft)}
+  .digital-row:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+  .digital-negative{--row-color:var(--accent)}
+  .digital-label{font-size:12px;color:var(--ink)}
+  .digital-track{position:relative;height:75px}
+  .digital-guide{position:absolute;top:0;bottom:0;border-left:1px solid var(--line);opacity:.45}
+  .digital-zero{position:absolute;left:var(--zero);top:0;bottom:0;border-left:1px dashed var(--muted);opacity:.6}
+  .digital-bar{position:absolute;left:var(--bar-left);width:var(--bar-width);height:3px;top:calc(50% - 1px);background:var(--row-color);opacity:.7}
+  .digital-point{position:absolute;left:var(--point);top:50%;width:10px;height:10px;background:var(--row-color);border:2px solid var(--surface);border-radius:50%;transform:translate(-50%,-50%);box-shadow:0 0 0 1px var(--row-color);transition:box-shadow .15s}
+  .digital-row:hover .digital-point,.digital-row:focus-visible .digital-point{box-shadow:0 0 0 4px var(--soft),0 0 0 5px var(--row-color)}
+  .digital-value{text-align:right;display:flex;flex-direction:column;gap:3px}
+  .digital-value strong{font:19px/1.2 var(--serif);color:var(--row-color);font-variant-numeric:tabular-nums}
+  .digital-value>span{font:9px var(--mono);color:var(--muted)}
+  .digital-axis{display:grid;grid-template-columns:100px minmax(0,1fr) 90px;gap:18px;height:32px}
+  .digital-axis>div{grid-column:2;position:relative}
+  .digital-axis span{position:absolute;top:9px;transform:translateX(-50%);font:8px var(--mono);color:var(--muted);white-space:nowrap}
+  figcaption{border-top:1px solid var(--line);padding-top:16px;margin-top:12px}
+  figcaption>span{font-size:10px;color:var(--ink);display:flex;align-items:center;gap:8px}
+  figcaption>span:before{content:'';width:5px;height:5px;border-radius:50%;background:var(--accent)}
+  figcaption p{font-size:10px;line-height:1.85;margin-top:6px;color:var(--muted)}
+  @media(max-width:720px){.digital-evidence{padding:23px 18px 20px}.digital-heading{display:block;margin-bottom:23px}.digital-heading h3{font-size:22px}.digital-sample{display:inline-block;margin-top:12px;padding:4px 8px}.digital-columns,.digital-row,.digital-axis{grid-template-columns:66px minmax(0,1fr) 67px;gap:11px}.digital-columns{font-size:8px}.digital-label{font-size:11px}.digital-value strong{font-size:17px}.digital-value>span{font-size:8px}.digital-axis span{font-size:7px}.digital-row,.digital-track{min-height:70px;height:70px}.digital-point{width:9px;height:9px}figcaption p{font-size:9px}}
+  @media(prefers-reduced-motion:reduce){.digital-row,.digital-point{transition:none}}
+</style>

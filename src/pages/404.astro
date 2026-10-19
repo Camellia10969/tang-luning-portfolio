@@ -1,0 +1,12 @@
+---
+import Layout from '../layouts/Layout.astro';
+const base = import.meta.env.BASE_URL;
+---
+<Layout title="页面未找到 · 唐露宁">
+  <section class="not-found wrap" aria-labelledby="missing-title">
+    <p class="eyebrow">页面未找到</p>
+    <h1 id="missing-title">404</h1>
+    <p>这个页面暂时无法找到。可以回到作品集，或使用右上角搜索查找研究项目。</p>
+    <a class="button" href={base}>返回作品集 <span aria-hidden="true">↗</span></a>
+  </section>
+</Layout>

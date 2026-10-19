@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="640" viewBox="0 0 1200 640" role="img" aria-labelledby="title desc">
+  <title id="title">从公开披露到九议题评分</title>
+  <desc id="desc">根据原报告第二章的方法说明重绘。以2024年ESG报告为主要评分依据，按环境社会治理三维度选择九项议题，再按目标、披露、措施和行业差距进行1至5分判断，最后解释差异。</desc>
+  <defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 10 5 0 10" fill="none" stroke="#82927e" stroke-width="1.5"/></marker></defs>
+  <rect width="1200" height="640" rx="10" fill="#f6f5ef"/>
+  <g font-family="'Microsoft YaHei','PingFang SC',sans-serif">
+    <text x="52" y="55" fill="#647168" font-size="13" letter-spacing="2">蜜雪冰城 / 研究方法</text>
+    <text x="52" y="107" fill="#202e28" font-size="33">从公开披露，到可解释的议题判断</text>
+    <text x="52" y="142" fill="#647168" font-size="16">原报告方法重绘 · 自建分析量表 · 九个子议题 · 1—5 分</text>
+    <path d="M270 259H330M564 259H624M858 259H918" stroke="#82927e" stroke-width="2" marker-end="url(#arrow)"/>
+    <g fill="#fdfcf8" stroke="#d8dcd0"><rect x="52" y="193" width="218" height="173" rx="6"/><rect x="346" y="193" width="218" height="173" rx="6"/><rect x="640" y="193" width="218" height="173" rx="6"/><rect x="934" y="193" width="214" height="173" rx="6"/></g>
+    <g fill="#a56e45" font-family="Georgia,serif" font-size="25"><text x="74" y="230">01</text><text x="368" y="230">02</text><text x="662" y="230">03</text><text x="956" y="230">04</text></g>
+    <g fill="#202e28" font-size="21"><text x="74" y="271">定位依据</text><text x="368" y="271">拆解议题</text><text x="662" y="271">形成评分</text><text x="956" y="271">解释差异</text></g>
+    <g fill="#647168" font-size="15"><text x="74" y="307">2024 年 ESG 报告</text><text x="74" y="334">与公开风险评论</text><text x="368" y="307">E / S / G 三个支柱</text><text x="368" y="334">结合茶饮行业特征</text><text x="662" y="307">四项判断依据</text><text x="662" y="334">综合形成 1—5 分</text><text x="956" y="307">识别相对强弱</text><text x="956" y="334">回到业务与风险</text></g>
+    <rect x="52" y="404" width="1096" height="148" rx="6" fill="#e9eee4"/>
+    <text x="76" y="439" fill="#28513f" font-size="16">评分依据</text>
+    <g fill="#202e28" font-size="20"><text x="76" y="484">目标明确性</text><text x="344" y="484">披露完整性</text><text x="612" y="484">措施实质性</text><text x="880" y="484">行业实践差距</text></g>
+    <g fill="#647168" font-size="14"><text x="76" y="515">是否有可辨识的管理目标</text><text x="344" y="515">是否提供充分、可核对信息</text><text x="612" y="515">是否记录具体管理行动</text><text x="880" y="515">与较好实践相比仍缺什么</text></g>
+    <text x="52" y="594" fill="#647168" font-size="13">来源：原 DOCX 第二章“ESG评估框架与数据来源说明”（目录标注第14—16页）；本图为网页重新绘制的方法示意。</text>
+    <text x="52" y="618" fill="#647168" font-size="13">评分属于案例分析量表，不等同于第三方机构评级；本图不展示未经复现的公司分数或综合排名。</text>
+  </g>
+</svg>

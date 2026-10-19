@@ -1,0 +1,76 @@
+---
+import Layout from '../layouts/Layout.astro';
+const base = import.meta.env.BASE_URL;
+---
+<Layout title="唐露宁 · 履历摘要" description="金融学背景，围绕文本、数据与证据开展研究，寻求 AI 产品与研究方向日常实习。">
+  <article class="profile-page wrap">
+    <header class="profile-header">
+      <div>
+        <p class="eyebrow">履历 / AI 产品与研究</p>
+        <h1>唐露宁</h1>
+        <p>AI 产品 / 研究方向日常实习 · 北京 / 上海</p>
+        <p><a href="mailto:481200839@qq.com">481200839@qq.com</a></p>
+      </div>
+      <button class="button" id="print-profile" type="button">打印 / 保存 PDF <span aria-hidden="true">↗</span></button>
+    </header>
+
+    <section aria-labelledby="profile-approach">
+      <h2 id="profile-approach">把问题拆清楚，把证据连接起来。</h2>
+      <p>从企业文本测量、政策评估到产业研究，我关注如何把复杂问题拆成可执行的流程，再用数据、评估和来源记录检验结果。希望将这些研究经验用于 AI 产品的问题定义、评估设计与持续迭代。</p>
+    </section>
+
+    <section aria-labelledby="profile-education">
+      <h2 id="profile-education">教育背景</h2>
+      <div class="experience-line">
+        <time>2024.09 — 2028.06</time>
+        <div><h3>中央民族大学 · 金融学本科</h3><p>均分 90.65 / 100 · 平均学分绩点 3.78 / 5.0 · 专业排名 5 / 59（前 8%）</p><small>专业奖学金二等奖 · 宏观经济学 97、国际金融学 97、国际经济学 96</small></div>
+      </div>
+    </section>
+
+    <section aria-labelledby="profile-experience">
+      <h2 id="profile-experience">研究与实习</h2>
+      <div class="experience-line">
+        <time>2026.08 — 至今</time>
+        <div><h3>A 股 ESG 信息披露质量 NLP 测度 · 独立研究</h3><ul>
+          <li>设计 PDF 解析、文本清洗、分句、词典匹配、人工标注与分类的研究流程；历史试点 覆盖 81 家公司、135,087 个句子。</li>
+          <li>建立 TF-IDF + 逻辑回归 可解释基线；五折交叉验证 F1 均值 0.818，独立留出集 F1 为 0.767，分别保留评价口径。</li>
+          <li>识别行业测量偏差；当前推进带有原文定位的命题、属性与关系抽取，真实研究抽取尚待运行与人工验证。</li>
+        </ul><small><a href={`${base}projects/esg-evidence/`}>查看研究过程与评估边界 ↗</a></small></div>
+      </div>
+      <div class="experience-line">
+        <time>2026.07 — 至今</time>
+        <div><h3>绿色金融试点与地区转型 · 独立研究</h3><ul>
+          <li>整合年鉴与多源非结构化资料，完成数据清洗、跨来源匹配、单位与口径核验。</li>
+          <li>围绕政策边界、处理时点与比较样本设计评估，使用 DID、SDID 和随机化推断，检查趋势与替代样本敏感性。</li>
+          <li>第七稿保留与初始假设不一致的结果，分别说明产业结构与燃烧相关污染物浓度的证据和推断边界。</li>
+        </ul><small><a href={`${base}projects/green-finance/`}>查看工作论文与真实结果图 ↗</a></small></div>
+      </div>
+      <div class="experience-line">
+        <time>2026.04 — 2026.09</time>
+        <div><h3>长城证券 · 化工行业研究实习生</h3><ul>
+          <li>在导师整体框架下，独立完成滨化股份深度报告 C3/C4 与新材料两大板块，约 2 万字正文纳入最终报告。</li>
+          <li>完成 20 篇公司点评、22 份配套研究底稿及 80 余张研究图表；提取财报、公告与行业数据并交叉核验。</li>
+          <li>维护行业数据库，统一多源数据口径、检查异常变化，并参与经营假设与报告修订。</li>
+        </ul><small><a href={`${base}projects/industry-research/`}>查看产业研究方法与贡献范围 ↗</a></small></div>
+      </div>
+    </section>
+
+    <section aria-labelledby="profile-projects">
+      <h2 id="profile-projects">团队项目</h2>
+      <ul>
+        <li><strong>企业案例分析大赛 · 3 人团队负责人 · 校级二等奖：</strong>设计蜜雪冰城 ESG 量化框架，搭建公司及同业数据库，完成 20 余张分析图表与最终整合。</li>
+        <li><strong>利率、市场叙事与 狗狗币 · 9 人团队负责人 · 系内汇报第一：</strong>提出选题，统筹研究框架、公开市场数据校验、演示文稿与最终主讲。</li>
+      </ul>
+    </section>
+
+    <section aria-labelledby="profile-skills">
+      <h2 id="profile-skills">工具与语言</h2>
+      <p>Python · Stata · SQL · Excel · iFinD（熟练）· Wind（了解）</p>
+      <p>雅思 6.5 · 大学英语六级 520 · 普通话二甲</p>
+    </section>
+    <p class="profile-disclaimer">本页为适合公开分享的履历摘要。经历按本人最新简历整理，研究指标另与项目输出核对；在研内容的具体阶段见项目页。<a href={base}>返回作品集 ↗</a></p>
+  </article>
+</Layout>
+<script>
+  document.querySelector<HTMLButtonElement>('#print-profile')?.addEventListener('click', () => window.print());
+</script>

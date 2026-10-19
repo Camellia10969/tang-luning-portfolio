@@ -1,0 +1,4 @@
+---
+const { steps } = Astro.props;
+---
+<ol class="research-journey">{steps.map((s: {title:string;body:string},i:number)=><li><span class="step-number">0{i+1}</span><h3>{s.title}</h3><p>{s.body}</p></li>)}</ol>

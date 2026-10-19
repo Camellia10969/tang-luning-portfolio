@@ -1,0 +1,23 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { projects, projectUrl } from '../../data/projects';
+const group=(slug:string)=>slug==='esg-evidence'?'文本与智能':['green-finance','digital-finance'].includes(slug)?'实证研究':['industry-research','c3c4-materials','methionine','biodiesel','polyester-roadshow'].includes(slug)?'产业研究':'商业与团队';
+const categories=['全部','文本与智能','实证研究','产业研究','商业与团队'];
+---
+<Layout title="研究与项目 · 唐露宁" description="按研究方向浏览唐露宁的文本分析、实证研究、产业研究与团队项目。" current="work">
+  <section class="project-index wrap">
+    <div class="breadcrumb"><a href={import.meta.env.BASE_URL}>首页</a><span>/</span><span>研究与项目</span></div>
+    <span class="eyebrow">研究档案 / 按问题与方法探索</span>
+    <div class="index-heading"><h1>每个问题，都有一条研究路径。</h1><p>从定义问题到解释证据，<br/>选择一个方向，查看具体过程。</p></div>
+    <div class="index-toolbar"><div class="index-filters" role="group" aria-label="筛选项目方向">{categories.map(c=><button type="button" data-filter={c} aria-pressed={c==='全部'?'true':'false'}>{c}</button>)}</div><span class="index-count" aria-live="polite">共 <strong data-result-count>{projects.length}</strong> 个项目</span></div>
+    <div class="index-list">{projects.map(p=><a class="index-project" data-category={group(p.slug)} href={projectUrl(p.slug)}><span class="index-number">{p.number}</span><div class="index-main"><span class="small-label">{p.category}</span><h2>{p.title}</h2><p>{p.description}</p><div class="tag-row">{p.tags.map(t=><span>{t}</span>)}</div></div><div class="index-meta"><span>{p.date}</span><small>{p.status}</small><strong aria-hidden="true">↗</strong></div></a>)}</div>
+    <p class="index-note">每个项目分别列明个人角色、研究阶段与材料来源。</p>
+  </section>
+</Layout>
+<script>
+  const items=[...document.querySelectorAll<HTMLElement>('[data-category]')];
+  document.querySelectorAll<HTMLButtonElement>('[data-filter]').forEach(button=>button.addEventListener('click',()=>{document.querySelectorAll('[data-filter]').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));let n=0;items.forEach(item=>{item.hidden=button.dataset.filter!=='全部'&&item.dataset.category!==button.dataset.filter;if(!item.hidden)n++;});document.querySelector('[data-result-count]')!.textContent=String(n);}));
+</script>
+<style>
+  .project-index{padding-block:45px 75px}.index-heading{display:flex;justify-content:space-between;gap:35px;align-items:end;margin:17px 0 35px}.index-heading h1{font:43px/1.45 var(--serif);max-width:760px}.index-heading p{font-size:12px;flex-shrink:0}.index-toolbar{display:flex;justify-content:space-between;gap:20px;align-items:center;border-block:1px solid var(--line);padding:16px 0}.index-filters{display:flex;gap:7px;flex-wrap:wrap}.index-filters button{font-size:11px;border:1px solid transparent;border-radius:3px;padding:9px 14px;min-height:40px;color:var(--muted)}.index-filters button:hover{background:var(--soft)}.index-filters button[aria-pressed=true]{color:var(--green);background:var(--soft);border-color:var(--line)}.index-count{font-size:10px;color:var(--muted);white-space:nowrap}.index-count strong{font-weight:500;color:var(--ink)}.index-project{display:grid;grid-template-columns:50px minmax(0,1fr) 185px;gap:26px;padding:28px 8px;border-bottom:1px solid var(--line);transition:background .2s}.index-project:hover{background:var(--soft)}.index-number{font:24px var(--serif);color:var(--accent);margin-top:4px}.index-main h2{font:26px var(--serif);margin-top:9px}.index-main p{font-size:12px;margin-top:12px;max-width:680px}.index-main .tag-row{margin-top:16px}.index-meta{display:flex;flex-direction:column;align-items:end;font-size:10px;color:var(--muted);text-align:right}.index-meta small{font-size:9px;margin-top:8px}.index-meta strong{font-size:24px;font-weight:400;color:var(--green);margin-top:auto}.index-note{font-size:11px;margin-top:24px}@media(max-width:720px){.project-index{padding-block:30px 45px}.index-heading{display:block}.index-heading h1{font-size:32px}.index-heading p{font-size:11px;margin-top:18px}.index-toolbar{display:block;padding:12px 0}.index-filters{gap:4px}.index-filters button{padding:8px 10px;font-size:10px}.index-count{display:block;margin-top:9px}.index-project{grid-template-columns:27px minmax(0,1fr);gap:15px;padding:23px 0}.index-number{font-size:21px}.index-main h2{font-size:23px;line-height:1.5}.index-main p{font-size:11px}.index-meta{grid-column:2;align-items:start;text-align:left;flex-direction:row;flex-wrap:wrap;gap:8px 20px}.index-meta small{margin:0}.index-meta strong{margin-left:auto;font-size:20px}}
+</style>
